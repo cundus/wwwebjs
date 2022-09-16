@@ -6,8 +6,9 @@ exports.signIn = async (req, res) => {
          }
 
          res.json({
+            success: true,
             message: "success",
-            qr: "localhost:5000/upload/qr.png",
+            data: "localhost:5000/upload/qr.png",
          });
       });
    } catch (error) {
@@ -16,4 +17,25 @@ exports.signIn = async (req, res) => {
          message: error.message,
       });
    }
+};
+
+exports.checkAuth = async (req, res) => {
+   client
+      .getState()
+      .then((data) => {
+         console.log(data);
+         res.json({
+            success: true,
+            message: "Sudah Terautentikasi",
+            data,
+         });
+      })
+      .catch((err) => {
+         if (err) {
+            res.status(400).send({
+               success: false,
+               message: "Disconnected",
+            });
+         }
+      });
 };
